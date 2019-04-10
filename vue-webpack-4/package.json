@@ -1,0 +1,33 @@
+{
+  "name": "vue-webpack-4",
+  "version": "1.0.0",
+  "description": "Vue.js 2 + Webpack 4",
+  "scripts": {
+    "build": "node ./Client/build/build.js",
+    "build-dev": "node ./Client/build/build-dev.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Arder Blackard",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "aspnet-webpack": "^3.0.0",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.1",
+    "friendly-errors-webpack-plugin": "^1.7.0",
+    "fsevents": "^1.2.7",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.5.0",
+    "ora": "^3.4.0",
+    "path": "^0.12.7",
+    "rimraf": "^2.6.3",
+    "vue": "^2.6.10",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
+    "webpack-dev-middleware": "^3.6.2",
+    "webpack-hot-middleware": "^2.24.3",
+    "webpack-merge": "^4.2.1"
+  }
+}
