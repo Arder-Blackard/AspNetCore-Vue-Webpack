@@ -1,8 +1,10 @@
 ﻿const baseConfig = require("./webpack.base.conf");
 const merge = require("webpack-merge");
+const path = require("path");
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = merge(baseConfig, {
     mode: "production",
@@ -55,6 +57,13 @@ module.exports = merge(baseConfig, {
         new MiniCssExtractPlugin({
             filename: "css/[name].[chunkhash].css",
             chunkFilename: "css/[id].[chunkhash].css"
-        })
+        }),
+        new CopyWebpackPlugin([
+            {
+                from: path.resolve(__dirname, "../static"),
+                to: "static",
+                ignore: [".*"]
+            }
+        ])
     ]
 });
