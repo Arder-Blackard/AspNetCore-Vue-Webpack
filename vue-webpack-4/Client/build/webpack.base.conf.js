@@ -1,35 +1,62 @@
-﻿const path = require("path");
-const config = require("../config");
+const path = require("path");
 
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+const wwwroot = path.resolve(__dirname, "../../wwwroot");
 
 module.exports = {
-    entry: {
-        app: "./Client/src/index.js"
-    },
+
     output: {
-        path: config.wwwroot,
+        path: wwwroot,
         filename: "[name].js",
         publicPath: "/"
     },
     resolve: {
-        extensions: [ ".js", ".vue" ],
+        extensions: [".js", ".vue"],
         alias: {
             "@": path.join(__dirname, "../src")
         }
     },
     module: {
         rules: [
+            {
+                test: /\.(js|vue)$/,
+                loader: "eslint-loader",
+                enforce: "pre",
+                include: [path.join(__dirname, "../src"), path.join(__dirname, "../test")],
+                options: {
+                    formatter: require("eslint-formatter-friendly")
+                }
+            },
             { test: /\.vue$/, loader: "vue-loader" },
-            { test: /\.js$/, loader: "babel-loader" }
+            { test: /\.js$/, loader: "babel-loader" },
+            {
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                loader: "url-loader",
+                options: {
+                    limit: 10000,
+                    name: path.join(wwwroot, "img/[name].[hash:7].[ext]")
+                }
+            },
+            {
+                test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+                loader: "url-loader",
+                options: {
+                    limit: 10000,
+                    name: path.join(wwwroot, "media/[name].[hash:7].[ext]")
+                }
+            },
+            {
+                test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+                loader: "url-loader",
+                options: {
+                    limit: 10000,
+                    name: path.join(wwwroot, "fonts/[name].[hash:7].[ext]")
+                }
+            }
         ]
     },
     plugins: [
         new VueLoaderPlugin(),
-        new MiniCssExtractPlugin({
-            filename: "[name].css",
-            chunkFilename: "[id].css"
-        })
     ]
 };

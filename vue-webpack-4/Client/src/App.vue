@@ -1,30 +1,25 @@
-﻿<template>
-    <div>
-        <div class="label">{{value}}</div>
-        <input type="text" v-model="value" />
-        <div>{{str}}</div>
+<template>
+    <div class="label">
+        <div class="label__content">{{ value }}</div>
     </div>
 </template>
 <script>
     export default {
-        name: "app",
+        name: "App",
         data() {
             return {
-                value: 10,
-                str: ""
+                value: 25,
             };
         },
-        watch: {
-            value() {
-                this.str += "+";
-            }
-        }
-    }
+    };
 </script>
-<style lang="css">
-    .label {
+<style lang="scss">
+.label {
+    &__content {
+        color: blue;
         font-size: 20px;
         font-weight: bold;
-        text-decoration: double;
+        text-decoration: overline dotted;
     }
+}
 </style>

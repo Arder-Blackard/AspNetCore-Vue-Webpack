@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -30,7 +31,7 @@ namespace vue_webpack_4
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddResponseCompression(options => options.EnableForHttps = true);
         }
 
@@ -44,7 +45,8 @@ namespace vue_webpack_4
                 app.UseDeveloperExceptionPage();
                 app.UseWebpackDevMiddleware(new Microsoft.AspNetCore.SpaServices.Webpack.WebpackDevMiddlewareOptions
                 {
-                    ConfigFile = "Client/build/webpack.dev.conf",
+                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "Client"),
+                    ConfigFile = "build/webpack.dev.conf",
                     HotModuleReplacement = true
                 });
             }
@@ -59,7 +61,8 @@ namespace vue_webpack_4
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
-            app.UseMvc( routes => {
+            app.UseMvc(routes =>
+            {
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Home", action = "Index" });
             });

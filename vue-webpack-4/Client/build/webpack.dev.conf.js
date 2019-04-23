@@ -7,31 +7,56 @@ const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
 
 module.exports = merge(baseConfig, {
     mode: "development",
+    entry: {
+        app: ["./src/index.js"]
+    },
     devtool: "eval-source-map",
+
+    optimization: {
+        noEmitOnErrors: true
+    },
+
     module: {
         rules: [{
             test: /\.css$/,
             use: [
                 {
-                    loader: "vue-style-loader"
+                    loader: "vue-style-loader",
+                    options: { sourceMap: false }
                 },
                 {
                     loader: "css-loader",
                     options: { sourceMap: false }
                 }
             ]
-            // loader: MiniCssExtractPlugin.loader                
+        },
+        {
+            test: /\.s[ac]ss/,
+            use: [
+                {
+                    loader: "vue-style-loader",
+                    options: { sourceMap: false }
+                },
+                {
+                    loader: "css-loader",
+                    options: { sourceMap: false }
+                },
+                {
+                    loader: "sass-loader",
+                    options: { sourceMap: false }
+                }
+            ]
         }]
     },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-        new FriendlyErrorsPlugin(),
 
+    plugins: [
+        new webpack.NoEmitOnErrorsPlugin(),
+        new FriendlyErrorsPlugin(),
         //  HTML Plugin.
         new HtmlWebpackPlugin({
             title: "Vue-2-Webpack-4",
             filename: "index-dev.html",
-            template: "Client/index.html",
+            template: "src/index-template.html",
             inject: true
         })
     ]

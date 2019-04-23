@@ -1,9 +1,15 @@
-﻿import Vue from "vue";
+import Vue from "vue";
 
-import app from "./App";
+import App from "./App";
 
+/* eslint-disable no-new */
 new Vue({
     el: "#app",
-    render: h => h("app"),
-    components: { app }
+    components: { App },
+    render: h => h("App"),
+    a: 1,
+    b: 2,
+    c: 4
 });
+/* eslint-enable no-new */
+
