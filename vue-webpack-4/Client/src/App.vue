@@ -16,7 +16,7 @@
 <style lang="scss">
 .label {
     &__content {
-        color: blue;
+        color: maroon;
         font-size: 20px;
         font-weight: bold;
         text-decoration: overline dotted;
