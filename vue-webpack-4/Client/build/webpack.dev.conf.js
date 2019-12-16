@@ -1,4 +1,6 @@
-﻿const baseConfig = require("./webpack.base.conf");
+const path = require("path");
+
+const baseConfig = require("./webpack.base.conf");
 const merge = require("webpack-merge");
 const webpack = require("webpack");
 
@@ -7,10 +9,18 @@ const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
 
 module.exports = merge(baseConfig, {
     mode: "development",
+    output: {
+        publicPath: "/dist/"
+    },
     entry: {
         app: ["./src/index.js"]
     },
     devtool: "eval-source-map",
+
+    devServer: {
+        port: 55555,
+        contentBase: path.resolve(__dirname, "../../wwwroot")
+    },
 
     optimization: {
         noEmitOnErrors: true

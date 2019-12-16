@@ -10,7 +10,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace vue_webpack_4.Controllers
 {
-    public class HomeController : ControllerBase
+    [Route("api")]
+    public sealed class ApiController : ControllerBase
+    {
+        [HttpGet("echo")]
+        public async Task<IActionResult> GetEcho([FromQuery]string input)
+        {
+            return Ok( "echo: " + input );
+        }
+    }
+
+    public sealed class HomeController : ControllerBase
     {
 #if DEBUG
         private const string IndexHtml = "index-dev.html";
@@ -18,27 +28,14 @@ namespace vue_webpack_4.Controllers
         private const string IndexHtml = "index.html";
 #endif
 
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
-        private static readonly object Lock = new object();
-        private static volatile byte[] _indexContent;
-
-        private static byte[] GetIndexContent(IHostingEnvironment hostingEnvironment)
+        private static byte[] GetIndexContent( IWebHostEnvironment hostingEnvironment )
         {
-            if (_indexContent == null)
-            {
-                lock (Lock)
-                {
-                    if (_indexContent == null)
-                    {
-                        _indexContent = System.IO.File.ReadAllBytes(Path.Combine(hostingEnvironment.WebRootPath, IndexHtml));
-                    }
-                }
-            }
-            return _indexContent;
+            return System.IO.File.ReadAllBytes( Path.Combine( hostingEnvironment.WebRootPath, IndexHtml ) );
         }
 
-        public HomeController(IHostingEnvironment hostingEnvironment)
+        public HomeController( IWebHostEnvironment hostingEnvironment )
         {
             _hostingEnvironment = hostingEnvironment;
         }
@@ -48,5 +45,10 @@ namespace vue_webpack_4.Controllers
             return File(GetIndexContent(_hostingEnvironment), MediaTypeNames.Text.Html);
         }
 
+        [HttpGet( "hello" )]
+        public async Task<IActionResult> GetHelloData()
+        {
+            return Ok( "Hello123!" );
+        }
     }
 }

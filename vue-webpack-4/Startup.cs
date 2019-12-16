@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,7 +17,7 @@ namespace vue_webpack_4
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup( IConfiguration configuration )
         {
             Configuration = configuration;
         }
@@ -24,49 +25,63 @@ namespace vue_webpack_4
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices( IServiceCollection services )
         {
-            services.Configure<CookiePolicyOptions>(options =>
+            services.Configure<CookiePolicyOptions>( options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
-            services.AddMvc(options => { options.EnableEndpointRouting = false; } ).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            services.AddResponseCompression(options => options.EnableForHttps = true);
+            } );
+
+            services.AddControllers()
+                    .SetCompatibilityVersion( CompatibilityVersion.Version_3_0 );
+
+            services.AddResponseCompression( options => options.EnableForHttps = true );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure( IApplicationBuilder app, IWebHostEnvironment env )
         {
             app.UseResponseCompression();
 
-            if (env.IsDevelopment())
+            app.UseCookiePolicy();
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints( routes =>
+            {
+                routes.MapDefaultControllerRoute();
+            } );
+
+            if ( env.IsDevelopment() )
             {
                 app.UseDeveloperExceptionPage();
-                app.UseWebpackDevMiddleware(new Microsoft.AspNetCore.SpaServices.Webpack.WebpackDevMiddlewareOptions
+                app.UseSpa( spa =>
                 {
-                    ProjectPath = Path.Combine(Directory.GetCurrentDirectory(), "Client"),
-                    ConfigFile = "build/webpack.dev.conf",
-                    HotModuleReplacement = true
-                });
+                    spa.Options.SourcePath = "dist";
+                    spa.UseProxyToSpaDevelopmentServer( "http://localhost:55555" );
+                } );
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler( "/Error" );
+
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
-
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
-                routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Home", action = "Index" });
-            });
+            // app.UseMvc(routes =>
+            // {
+            // routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            // routes.MapSpaFallbackRoute("spa-fallback", new { controller = "Home", action = "Index" });
+            // });
         }
     }
 }
