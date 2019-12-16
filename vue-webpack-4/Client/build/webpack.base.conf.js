@@ -35,7 +35,7 @@ module.exports = {
                 loader: "url-loader",
                 options: {
                     limit: 10000,
-                    name: path.join(wwwroot, "img/[name].[hash:7].[ext]")
+                    name: "static/img/[name].[hash:7].[ext]"
                 }
             },
             {
@@ -43,7 +43,7 @@ module.exports = {
                 loader: "url-loader",
                 options: {
                     limit: 10000,
-                    name: path.join(wwwroot, "media/[name].[hash:7].[ext]")
+                    name: "static/media/[name].[hash:7].[ext]"
                 }
             },
             {
@@ -51,12 +51,12 @@ module.exports = {
                 loader: "url-loader",
                 options: {
                     limit: 10000,
-                    name: path.join(wwwroot, "fonts/[name].[hash:7].[ext]")
+                    name: "static/fonts/[name].[hash:7].[ext]"
                 }
             }
         ]
     },
     plugins: [
-        new VueLoaderPlugin(),
+        new VueLoaderPlugin()
     ]
 };

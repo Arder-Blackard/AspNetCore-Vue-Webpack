@@ -1,6 +1,8 @@
 <template>
     <div class="label">
-        <div class="label__content">{{ value }}</div>
+        <div class="label__content">
+            Echo result: {{ value }}
+        </div>
     </div>
 </template>
 <script>
@@ -8,16 +10,20 @@
         name: "App",
         data() {
             return {
-                value: 25,
+                value: 25
             };
         },
+        async mounted() {
+            const result = await fetch("/api/echo?input=Hello,World!");
+            this.value = await result.text();
+        }
     };
 </script>
 <style lang="scss">
 .label {
     &__content {
-        color: maroon;
-        font-size: 20px;
+        color: magenta;
+        font-size: 35px;
         font-weight: bold;
         text-decoration: overline dotted;
     }
