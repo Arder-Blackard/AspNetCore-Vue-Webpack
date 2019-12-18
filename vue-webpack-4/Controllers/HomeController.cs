@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 
 namespace vue_webpack_4.Controllers
 {
@@ -18,21 +19,24 @@ namespace vue_webpack_4.Controllers
         {
             return Ok( "echo: " + input );
         }
+
+        [HttpGet("get404")]
+        public async Task<IActionResult> Get404([FromQuery]string input)
+        {
+            return NotFound("Whoops!");
+        }
     }
 
     public sealed class HomeController : ControllerBase
     {
-#if DEBUG
-        private const string IndexHtml = "index-dev.html";
-#else
+        private const string IndexDevHtml = "index-dev.html";
         private const string IndexHtml = "index.html";
-#endif
 
         private readonly IWebHostEnvironment _hostingEnvironment;
 
-        private static byte[] GetIndexContent( IWebHostEnvironment hostingEnvironment )
+        private static byte[] GetIndexContent( IWebHostEnvironment env )
         {
-            return System.IO.File.ReadAllBytes( Path.Combine( hostingEnvironment.WebRootPath, IndexHtml ) );
+            return System.IO.File.ReadAllBytes( Path.Combine( env.WebRootPath, env.IsDevelopment() ? IndexDevHtml : IndexHtml  ) );
         }
 
         public HomeController( IWebHostEnvironment hostingEnvironment )

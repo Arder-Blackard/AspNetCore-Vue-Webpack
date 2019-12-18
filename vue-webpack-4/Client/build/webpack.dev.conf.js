@@ -19,7 +19,8 @@ module.exports = merge(baseConfig, {
 
     devServer: {
         port: 55555,
-        contentBase: path.resolve(__dirname, "../../wwwroot")
+        contentBase: path.resolve(__dirname, "../../wwwroot"),
+        overlay: true
     },
 
     optimization: {

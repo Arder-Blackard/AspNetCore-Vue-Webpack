@@ -6,7 +6,7 @@
   "scripts": {
     "build": "node ./build/build.js",
     "build-dev": "node ./build/build-dev.js",
-    "start-dev": "webpack-dev-server --config build/webpack.dev.conf.js --hot --inline",
+    "start-dev": "set DEBUG=express:* && webpack-dev-server --config build/webpack.dev.conf.js --hot --inline",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Arder Blackard",

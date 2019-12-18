@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace vue_webpack_4
 {
@@ -18,6 +19,7 @@ namespace vue_webpack_4
                            web.UseStartup<Startup>()
                               .ConfigureKestrel( options => { } );
                        } )
+                       .ConfigureLogging( log => log.AddConsole() );
                 ;
         }
     }
